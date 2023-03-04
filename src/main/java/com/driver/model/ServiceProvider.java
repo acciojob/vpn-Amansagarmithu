@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "ServiceProvider")
 public class ServiceProvider {
 
     @Id
@@ -17,21 +18,26 @@ public class ServiceProvider {
     @JoinColumn
     private Admin admin;
 
-    @OneToMany(mappedBy = "serviceProvider",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
     List<Connection> connectionList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "serviceProvider",cascade = CascadeType.ALL)
-    private List<Country> countryList = new ArrayList<>();
 
     @ManyToMany
     @JoinColumn
-    private List<User> users = new ArrayList<>();
+    List<User> users = new ArrayList<>();
 
-    public ServiceProvider(String name) {
-        this.name = name;
-    }
+    @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
+    List<Country> countryList = new ArrayList<>();
 
     public ServiceProvider() {
+    }
+
+    public ServiceProvider(int id, String name, Admin admin, List<Connection> connectionList, List<User> users, List<Country> countryList) {
+        this.id = id;
+        this.name = name;
+        this.admin = admin;
+        this.connectionList = connectionList;
+        this.users = users;
+        this.countryList = countryList;
     }
 
     public int getId() {
@@ -66,19 +72,19 @@ public class ServiceProvider {
         this.connectionList = connectionList;
     }
 
-    public List<Country> getCountryList() {
-        return countryList;
-    }
-
-    public void setCountryList(List<Country> countryList) {
-        this.countryList = countryList;
-    }
-
     public List<User> getUsers() {
         return users;
     }
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Country> getCountryList() {
+        return countryList;
+    }
+
+    public void setCountryList(List<Country> countryList) {
+        this.countryList = countryList;
     }
 }

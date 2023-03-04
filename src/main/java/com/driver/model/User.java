@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "User")
 public class User {
 
     @Id
@@ -12,34 +13,24 @@ public class User {
     private int id;
 
     private String username;
-
     private String password;
-
     private String originalIp;
-
     private String maskedIp;
+    private Boolean connected;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Connection> connectionList;
 
-    private boolean connected;
+    @ManyToMany
+    @JoinColumn
+    private List<ServiceProvider> serviceProviderList;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    List<Connection> connectionList = new ArrayList<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Country originalCountry;
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
-    private Country country;
-
-    @ManyToMany(mappedBy = "users",cascade = CascadeType.ALL)
-    private List<ServiceProvider> serviceProviderList = new ArrayList<>();
-
-    public User(String username, String password, String originalIp, String maskedIp, boolean connected) {
-        this.username = username;
-        this.password = password;
-        this.originalIp = originalIp;
-        this.maskedIp = maskedIp;
-        this.connected = connected;
-    }
 
     public User() {
     }
+
 
     public int getId() {
         return id;
@@ -81,11 +72,11 @@ public class User {
         this.maskedIp = maskedIp;
     }
 
-    public boolean isConnected() {
+    public Boolean getConnected() {
         return connected;
     }
 
-    public void setConnected(boolean connected) {
+    public void setConnected(Boolean connected) {
         this.connected = connected;
     }
 
@@ -97,19 +88,19 @@ public class User {
         this.connectionList = connectionList;
     }
 
-    public Country getCountry() {
-        return country;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
     public List<ServiceProvider> getServiceProviderList() {
         return serviceProviderList;
     }
 
     public void setServiceProviderList(List<ServiceProvider> serviceProviderList) {
         this.serviceProviderList = serviceProviderList;
+    }
+
+    public Country getOriginalCountry() {
+        return originalCountry;
+    }
+
+    public void setOriginalCountry(Country originalCountry) {
+        this.originalCountry = originalCountry;
     }
 }
